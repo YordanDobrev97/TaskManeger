@@ -1,0 +1,30 @@
+.container {
+    width: 40%;
+    margin: 10px auto;
+    padding: 80px;
+    background: rgb(7, 70, 133);
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.formBtn {
+    background: orange;
+    color: white;
+    padding: 20px;
+    font-size: 22px;
+    border: none;
+    width: 300px;
+    text-align: center;
+}
+
+.containerBtn {
+    width: 60%;
+    margin: 18px auto;
+}

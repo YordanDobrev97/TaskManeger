@@ -28,3 +28,29 @@
     width: 60%;
     margin: 18px auto;
 }
+
+.titleTask {
+    color: white;
+    font-size: 24px;
+    text-align: center;
+}
+
+.detailContainer {
+    width: 300px;
+    margin: 30px auto;
+    padding: 40px;
+    color: white;
+    background-color: darkslategrey;
+}
+
+.xp {
+    background-color: rgb(180, 43, 43);
+    color: white;
+    padding: 10px;
+    max-width: 100px;
+}
+
+.taskDescription {
+    font-size: 22px;
+    font-weight: bold;
+}

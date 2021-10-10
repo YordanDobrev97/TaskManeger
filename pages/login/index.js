@@ -1,13 +1,12 @@
 import { useState, useContext } from 'react'
 import Router from 'next/router'
-import Navbar from '../../components/Layout'
+import Navbar from '../../components/Navbar'
 import formStyles from '../../styles/form.module.css'
 import { useCookies } from 'react-cookie'
-import UserContext from '../../context/userContext'
-import Layout from '../../components/Layout'
+import AuthContext from '../../context/authContext'
 
 export default function LoginPage() {
-    const context = useContext(UserContext)
+    const context = useContext(AuthContext)
     console.log(context)
 
     const [username, setUsername] = useState()
@@ -34,29 +33,26 @@ export default function LoginPage() {
 
         if (loginResponse?.user) {
             setCookies('jwtToken', loginResponse.jwt)
-            setCookies('user', loginResponse.user.username)
-            context?.setLogIn(!context.isLogIn);
+            context?.setUser({ username, id: loginResponse.user.id })
             Router.push('/')
         }
     }
 
     return (
         <div>
-            <Layout>
-                <div className={formStyles.container}>
-                    <div>
-                        <input onChange={(e) => setUsername(e.target.value)} className={formStyles.input} type="text" placeholder="Username" />
-                    </div>
-
-                    <div>
-                        <input onChange={(e) => setPassword(e.target.value)} className={formStyles.input} type="password" placeholder="Password" />
-                    </div>
-
-                    <div className={formStyles.containerBtn}>
-                        <button onClick={loginHandler} className={formStyles.formBtn}>Login</button>
-                    </div>
+            <div className={formStyles.container}>
+                <div>
+                    <input onChange={(e) => setUsername(e.target.value)} className={formStyles.input} type="text" placeholder="Username" />
                 </div>
-            </Layout>
+
+                <div>
+                    <input onChange={(e) => setPassword(e.target.value)} className={formStyles.input} type="password" placeholder="Password" />
+                </div>
+
+                <div className={formStyles.containerBtn}>
+                    <button onClick={loginHandler} className={formStyles.formBtn}>Login</button>
+                </div>
+            </div>
         </div>
     )
 }

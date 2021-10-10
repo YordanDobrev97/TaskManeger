@@ -1,11 +1,11 @@
-import { withRouter } from "next/router"
-import { useRouter } from 'next/router'
-import Layout from '../../components/Layout'
+import styles from './style.module.css'
 
-const Details = ({ pid }) => {
+const Details = ({ pid, task }) => {
     return (
-        <div>
-            Page: {pid}
+        <div className={styles.detailContainer}>
+            <h2 className={styles.titleTask}>{task?.name}</h2>
+            <p className={styles.xp}>XP: {task?.xp}</p>
+            <p className={styles.taskDescription}>{task?.description}</p>
         </div>
     )
 }
@@ -18,17 +18,27 @@ export async function getStaticProps({ params }) {
     const { pid } = params;
 
     try {
-        //const { data } = await ArticleAPI.get(pid);
+        const task = await fetch(`http://localhost:1337/tasks/${pid}`, {
+            method: "GET",
+        })
+
+        const taskResponse = await task.json();
+        console.log(taskResponse)
         return {
             props: {
                 pid,
+                task: {
+                    name: taskResponse.name,
+                    description: taskResponse.description,
+                    xp: taskResponse.xp
+                }
             },
             revalidate: 1,
         };
     } catch (error) {
         return {
             props: {
-                article: {},
+                task: {},
                 pid,
             },
             revalidate: 1,

@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
 import styles from '../../styles/Home.module.css'
-import UserContext from '../../context/userContext'
+import AuthContext from '../../context/authContext'
 import { useCookies } from 'react-cookie'
 import jwtParser from '../../utils/jwtParser'
 
 export default function Home() {
-    const context = useContext(UserContext)
-    console.log('Home Context: ', context)
+    const context = useContext(AuthContext)
+    console.log('home:', context)
+
     const [cookies, setCookies] = useCookies(['name'])
     const [tasks, setTasks] = useState([])
-    const [isLogIn, setLogIn] = useState(false)
 
     const handleUserTasks = async (token) => {
         const task = await fetch(`http://localhost:1337/tasks`, {
@@ -24,8 +24,6 @@ export default function Home() {
 
         if (tasksResponse) {
             setTasks(tasksResponse)
-            setLogIn(true)
-            context.setLogIn(true)
         }
     }
 
@@ -40,12 +38,10 @@ export default function Home() {
         console.log(tasks)
     }, [])
 
-
-
     return (
         <div className={styles.container}>
             <main className="main">
-                {context.isLogIn ? (
+                {context?.user ? (
                     <div className={styles.cardContainer}>
                         {tasks && tasks.map((task => {
                             console.log(task)

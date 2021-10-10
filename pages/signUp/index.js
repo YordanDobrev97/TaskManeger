@@ -2,16 +2,16 @@ import { useContext } from 'react'
 import getConfig from 'next/config'
 import Router from 'next/router'
 import { useState } from 'react'
-import Navbar from '../../components/Layout'
+import Navbar from '../../components/Navbar'
 import formStyles from '../../styles/form.module.css'
 import { useCookies } from 'react-cookie'
-import UserContext from '../../context/userContext'
-import Layout from '../../components/Layout'
+import AuthContext from '../../context/authContext'
 
 const { publicRuntimeConfig } = getConfig()
 
 export default function SignUp() {
-    const context = useContext(UserContext)
+    const context = useContext(AuthContext)
+    console.log(context)
 
     const [email, setEmail] = useState()
     const [username, setUsername] = useState()
@@ -47,38 +47,36 @@ export default function SignUp() {
 
         if (signUpResponse?.user) {
             setCookies('jwtToken', signUpResponse.jwt)
-            context.setLogIn(!context.isLogIn) // set that the user is logged in
+            //context?.setLogIn(!context.isLogIn) // set that the user is logged in
             Router.push('/')
         }
     }
 
     return (
         <div>
-            <Layout>
-                {message && <p className={formStyles.notification}>{message}</p>}
+            {message && <p className={formStyles.notification}>{message}</p>}
 
-                <div className={formStyles.container}>
-                    <div>
-                        <input onChange={(e) => setEmail(e.target.value)} className={formStyles.input} type="text" placeholder="Email" />
-                    </div>
-
-                    <div>
-                        <input onChange={(e) => setUsername(e.target.value)} className={formStyles.input} type="text" placeholder="Username" />
-                    </div>
-
-                    <div>
-                        <input onChange={(e) => setPassword(e.target.value)} className={formStyles.input} type="password" placeholder="Password" />
-                    </div>
-
-                    <div>
-                        <input onChange={(e) => setConfirmPassword(e.target.value)} className={formStyles.input} type="password" placeholder="Confirm Password" />
-                    </div>
-
-                    <div className={formStyles.containerBtn}>
-                        <button onClick={signUpHandler} className={formStyles.formBtn}>Sign Up</button>
-                    </div>
+            <div className={formStyles.container}>
+                <div>
+                    <input onChange={(e) => setEmail(e.target.value)} className={formStyles.input} type="text" placeholder="Email" />
                 </div>
-            </Layout>
+
+                <div>
+                    <input onChange={(e) => setUsername(e.target.value)} className={formStyles.input} type="text" placeholder="Username" />
+                </div>
+
+                <div>
+                    <input onChange={(e) => setPassword(e.target.value)} className={formStyles.input} type="password" placeholder="Password" />
+                </div>
+
+                <div>
+                    <input onChange={(e) => setConfirmPassword(e.target.value)} className={formStyles.input} type="password" placeholder="Confirm Password" />
+                </div>
+
+                <div className={formStyles.containerBtn}>
+                    <button onClick={signUpHandler} className={formStyles.formBtn}>Sign Up</button>
+                </div>
+            </div>
         </div>
     )
 }

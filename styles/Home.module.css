@@ -48,10 +48,31 @@
   color: white;
 }
 
-.detailsBtn {
-  background: #0275d8;
+.taskBtn {
+  background: #0e0ed4;
   padding: 12px;
   border: none;
   width: 40%;
   font-size: 22px;
+  margin: 8px;
+  color: white;
+}
+
+.deleteBtn {
+  background: #da0606;
+  padding: 12px;
+  border: none;
+  width: 40%;
+  font-size: 22px;
+  margin: 8px;
+  color: white;
+}
+
+.notification {
+  background: rgb(8, 206, 8);
+  width: 230px;
+  margin: 10px auto;
+  padding: 12px;
+  color: white;
+  font-size: 20px;
 }

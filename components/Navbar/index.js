@@ -1,26 +1,26 @@
 import { useState, useContext, useEffect } from 'react'
 import Link from 'next/link'
+import Router from 'next/router'
 import styles from './style.module.css'
 import AuthContext from '../../context/authContext'
 import { useCookies } from 'react-cookie'
 
 export default function Navbar() {
     const context = useContext(AuthContext)
-    console.log(context)
-
     const [cookies, _, removeCookie] = useCookies(['name'])
 
     useEffect(() => {
-        const jtw = cookies?.jwtToken;
+        const jtw = cookies?.token;
 
         if (jtw) {
-            //context?.setLogIn(true)
+            context.setUser({ logIn: true })
         }
     }, [])
 
     const logout = () => {
         removeCookie('jwtToken');
-        //context.setLogIn(false)
+        context.setUser(null)
+        Router.push('/')
     }
 
     return (

@@ -6,12 +6,11 @@ import Navbar from '../../components/Navbar'
 import formStyles from '../../styles/form.module.css'
 import { useCookies } from 'react-cookie'
 import AuthContext from '../../context/authContext'
-
-const { publicRuntimeConfig } = getConfig()
+import { DATABASE_URL } from '../request'
 
 export default function SignUp() {
     const context = useContext(AuthContext)
-    console.log(context)
+    console.log('context', context)
 
     const [email, setEmail] = useState()
     const [username, setUsername] = useState()
@@ -30,10 +29,9 @@ export default function SignUp() {
             username: username,
             email: email,
             password: password,
-
         }
 
-        const signUp = await fetch(`http://localhost:1337/auth/local/register`, {
+        const signUp = await fetch(`${DATABASE_URL}/auth/local/register`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -46,8 +44,10 @@ export default function SignUp() {
         console.log(signUpResponse)
 
         if (signUpResponse?.user) {
-            setCookies('jwtToken', signUpResponse.jwt)
-            //context?.setLogIn(!context.isLogIn) // set that the user is logged in
+            setCookies('jwtToken', signUpResponse.jwt, {
+                maxAge: 3600
+            })
+            context.setUser({ username, email })
             Router.push('/')
         }
     }

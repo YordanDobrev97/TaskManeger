@@ -4,16 +4,15 @@ import styles from '../../styles/Home.module.css'
 import AuthContext from '../../context/authContext'
 import { useCookies } from 'react-cookie'
 import jwtParser from '../../utils/jwtParser'
+import { DATABASE_URL } from '../request'
 
 export default function Home() {
     const context = useContext(AuthContext)
-    console.log('home:', context)
-
     const [cookies, setCookies] = useCookies(['name'])
     const [tasks, setTasks] = useState([])
 
     const handleUserTasks = async (token) => {
-        const task = await fetch(`http://localhost:1337/tasks`, {
+        const task = await fetch(`${DATABASE_URL}/tasks`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -28,14 +27,13 @@ export default function Home() {
     }
 
     useEffect(() => {
-        const jwtToken = cookies?.jwtToken;
+        const jwtToken = cookies?.token;
         const userInfo = jwtToken && jwtParser(jwtToken)
-        console.log(userInfo)
 
         if (userInfo) {
             handleUserTasks(jwtToken);
+            context.setUser(userInfo)
         }
-        console.log(tasks)
     }, [])
 
     return (
@@ -44,13 +42,12 @@ export default function Home() {
                 {context?.user ? (
                     <div className={styles.cardContainer}>
                         {tasks && tasks.map((task => {
-                            console.log(task)
                             return (
                                 <div key={task.id} className={styles.card}>
                                     <h3 className={styles.title}>{task.name}</h3>
                                     <div className={styles.detailsContainer}>
                                         <button className={styles.detailsBtn}>
-                                            <Link href={`/task/${task.id}`}>Details</Link>
+                                            <Link href={`/task/[taskId]`} as={`/task/${task.id}`}>Details</Link>
                                         </button>
                                     </div>
                                 </div>

@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar'
 import formStyles from '../../styles/form.module.css'
 import { useCookies } from 'react-cookie'
 import AuthContext from '../../context/authContext'
+import { DATABASE_URL } from '../request'
 
 export default function LoginPage() {
     const context = useContext(AuthContext)
@@ -19,7 +20,7 @@ export default function LoginPage() {
             password
         }
 
-        const login = await fetch(`http://localhost:1337/auth/local`, {
+        const login = await fetch(`${DATABASE_URL}/auth/local`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -32,8 +33,16 @@ export default function LoginPage() {
         console.log(loginResponse)
 
         if (loginResponse?.user) {
-            setCookies('jwtToken', loginResponse.jwt)
-            context?.setUser({ username, id: loginResponse.user.id })
+            setCookies('token', loginResponse.jwt, {
+                maxAge: 3600
+            })
+            context.setUser({
+                username,
+                id: loginResponse.user.id,
+                isLogIn: cookies?.token
+            })
+
+            console.log('login context', context)
             Router.push('/')
         }
     }

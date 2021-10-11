@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
+
 const AuthContext = React.createContext({
     user: null,
     login: () => { },
     logout: () => { }
-
 })
 
 export const AuthContextProvider = ({ children }) => {

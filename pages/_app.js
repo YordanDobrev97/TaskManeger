@@ -1,6 +1,5 @@
 import Navbar from '../components/Navbar'
 import { AuthContextProvider } from '../context/authContext'
-
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {

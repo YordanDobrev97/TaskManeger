@@ -1,7 +1,9 @@
 import { useContext, useState } from 'react'
+import Router from 'next/router'
 import formStyles from './style.module.css'
 import AuthContext from '../../context/authContext'
 import { useCookies } from 'react-cookie'
+import { DATABASE_URL } from '../request'
 
 export default function CreateTask() {
     const context = useContext(AuthContext)
@@ -10,19 +12,21 @@ export default function CreateTask() {
     const [description, setDescription] = useState()
     const [xp, setXp] = useState()
 
-    console.log(context?.user.username)
-
     const createTaskHandler = async () => {
-        const jwt = cookies?.jwtToken;
+        const jwt = cookies?.token;
+
+        if (!jwt) {
+            Router.push('/login')
+        }
 
         const taskInfo = {
             name,
             description,
             xp,
-            user: { username: context?.user.username }
+            //user: { username: context.user.username }
         }
 
-        const task = await fetch(`http://localhost:1337/tasks`, {
+        const task = await fetch(`${DATABASE_URL}/tasks`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -33,7 +37,10 @@ export default function CreateTask() {
         })
 
         const taskResponse = await task.json();
-        console.log(taskResponse)
+
+        if (taskResponse?.id) {
+            Router.push('/')
+        }
     }
 
     return (

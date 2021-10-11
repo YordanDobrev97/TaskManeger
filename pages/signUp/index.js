@@ -6,7 +6,7 @@ import Navbar from '../../components/Navbar'
 import formStyles from '../../styles/form.module.css'
 import { useCookies } from 'react-cookie'
 import AuthContext from '../../context/authContext'
-import DATABASE_URL from '../request'
+import DATABASE_URL from '../../utils/request'
 
 export default function SignUp() {
     const context = useContext(AuthContext)

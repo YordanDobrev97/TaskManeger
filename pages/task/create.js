@@ -22,9 +22,9 @@ export default function CreateTask() {
         }
 
         const taskInfo = {
-            name,
-            description,
-            xp,
+            name: name,
+            description: description,
+            xp: xp,
             user: {
                 id: jwtObj.id
             }

@@ -11,15 +11,15 @@ export default function Home() {
     const [cookies, setCookies] = useCookies(['name'])
     const [tasks, setTasks] = useState([])
 
-    const handleUserTasks = async (token) => {
-        const task = await fetch(`${DATABASE_URL}/tasks`, {
-            method: "GET",
+    const handleUserTasks = async (token, id) => {
+        const task = await fetch(`${DATABASE_URL}/tasks?_where[user]=${id}`, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                "Authorization": `Bearer ` + token,
             },
         })
 
         const tasksResponse = await task.json();
+        console.log(tasksResponse)
 
         if (tasksResponse) {
             setTasks(tasksResponse)
@@ -31,7 +31,7 @@ export default function Home() {
         const userInfo = jwtToken && jwtParser(jwtToken)
 
         if (userInfo) {
-            handleUserTasks(jwtToken);
+            handleUserTasks(jwtToken, userInfo.id);
             context.setUser(userInfo)
         }
     }, [])

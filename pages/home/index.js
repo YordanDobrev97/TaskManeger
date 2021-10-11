@@ -4,7 +4,7 @@ import styles from '../../styles/Home.module.css'
 import AuthContext from '../../context/authContext'
 import { useCookies } from 'react-cookie'
 import jwtParser from '../../utils/jwtParser'
-import { DATABASE_URL } from '../request'
+import DATABASE_URL from '../request'
 
 export default function Home() {
     const context = useContext(AuthContext)

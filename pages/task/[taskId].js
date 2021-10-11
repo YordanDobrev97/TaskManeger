@@ -1,7 +1,7 @@
 import styles from './style.module.css'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { DATABASE_URL } from '../request'
+import DATABASE_URL from '../request'
 
 const Details = () => {
     const router = useRouter()

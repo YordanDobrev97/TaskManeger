@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar'
 import formStyles from '../../styles/form.module.css'
 import { useCookies } from 'react-cookie'
 import AuthContext from '../../context/authContext'
-import { DATABASE_URL } from '../request'
+import DATABASE_URL from '../request'
 
 export default function LoginPage() {
     const context = useContext(AuthContext)

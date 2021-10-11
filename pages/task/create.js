@@ -3,7 +3,7 @@ import Router from 'next/router'
 import formStyles from './style.module.css'
 import AuthContext from '../../context/authContext'
 import { useCookies } from 'react-cookie'
-import { DATABASE_URL } from '../request'
+import DATABASE_URL from '../request'
 
 export default function CreateTask() {
     const context = useContext(AuthContext)

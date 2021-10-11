@@ -4,6 +4,7 @@ import formStyles from './style.module.css'
 import AuthContext from '../../context/authContext'
 import { useCookies } from 'react-cookie'
 import DATABASE_URL from '../../utils/request'
+import jtwParser from '../../utils/jwtParser'
 
 export default function CreateTask() {
     const context = useContext(AuthContext)
@@ -14,6 +15,7 @@ export default function CreateTask() {
 
     const createTaskHandler = async () => {
         const jwt = cookies?.token;
+        const jwtObj = jtwParser(jwt)
 
         if (!jwt) {
             Router.push('/login')
@@ -23,7 +25,9 @@ export default function CreateTask() {
             name,
             description,
             xp,
-            //user: { username: context.user.username }
+            user: {
+                id: jwtObj.id
+            }
         }
 
         const task = await fetch(`${DATABASE_URL}/tasks`, {

@@ -1,8 +1,6 @@
 import { useContext } from 'react'
-import getConfig from 'next/config'
 import Router from 'next/router'
 import { useState } from 'react'
-import Navbar from '../../components/Navbar'
 import formStyles from '../../styles/form.module.css'
 import { useCookies } from 'react-cookie'
 import AuthContext from '../../context/authContext'
@@ -10,7 +8,6 @@ import DATABASE_URL from '../../utils/request'
 
 export default function SignUp() {
     const context = useContext(AuthContext)
-    console.log('context', context)
 
     const [email, setEmail] = useState()
     const [username, setUsername] = useState()
@@ -41,10 +38,9 @@ export default function SignUp() {
         })
 
         const signUpResponse = await signUp.json();
-        console.log(signUpResponse)
 
         if (signUpResponse?.user) {
-            setCookies('jwtToken', signUpResponse.jwt, {
+            setCookies('token', signUpResponse.jwt, {
                 maxAge: 3600
             })
             context.setUser({ username, email })

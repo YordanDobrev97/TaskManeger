@@ -2,7 +2,7 @@
     width: 40%;
     margin: 10px auto;
     padding: 80px;
-    background: rgb(7, 70, 133);
+    background: rgb(52 147 242);
 }
 
 .input {
@@ -48,9 +48,13 @@
     color: white;
     padding: 10px;
     max-width: 100px;
+    text-align: center;
+    margin: auto;
 }
 
 .taskDescription {
     font-size: 22px;
     font-weight: bold;
+    color: white;
+    text-align: center;
 }

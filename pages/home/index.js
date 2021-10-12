@@ -120,7 +120,7 @@ export default function Home() {
                     )
                 ) : (
                     <div>
-                        <h2 className={styles.mainTitle}>Task Manger App</h2>
+                        <h2 className={styles.mainTitle}>Task Manager App</h2>
                         <p className={styles.description}>Sign up and manage your tasks</p>
                     </div>
                 )}

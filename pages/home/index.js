@@ -5,14 +5,17 @@ import AuthContext from '../../context/authContext'
 import { useCookies } from 'react-cookie'
 import jwtParser from '../../utils/jwtParser'
 import DATABASE_URL from '../../utils/request'
-import { faEye, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faTrashAlt, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Home() {
+    const itemsPerPage = 3;
     const context = useContext(AuthContext)
     const [cookies, setCookies] = useCookies(['name'])
     const [tasks, setTasks] = useState([])
     const [notification, setNotification] = useState('')
+    const [currentCount, setCurrentCount] = useState(0)
+    const [maxCount, setMaxCount] = useState(itemsPerPage)
 
     const handleUserTasks = async (token, id) => {
         const task = await fetch(`${DATABASE_URL}/tasks?_where[user]=${id}`, {
@@ -62,31 +65,59 @@ export default function Home() {
         }
     }, [])
 
+    const prevHandler = (e) => {
+        if (!(currentCount === 0 && maxCount === itemsPerPage)) {
+            setCurrentCount(currentCount - itemsPerPage)
+            setMaxCount(maxCount - itemsPerPage)
+        }
+    }
+
+    const nextHandler = () => {
+        if (maxCount < tasks.length) {
+            setCurrentCount(maxCount)
+            setMaxCount(maxCount + itemsPerPage)
+        }
+    }
+
+    const currentItems = tasks.slice(currentCount, maxCount)
+
     return (
         <div className={styles.container}>
             <main className="main">
                 {notification && <p className={styles.notification}>{notification}</p>}
                 {context?.user ? (
-                    <div className={styles.cardContainer}>
-                        {tasks && tasks.map((task => {
-                            return (
-                                <div key={task.id} className={styles.card}>
-                                    <h3 className={styles.title}>{task.name}</h3>
-                                    <div className={styles.detailsContainer}>
-                                        <button className={styles.taskBtn}>
-                                            <Link href={`/task/[taskId]`} as={`/task/${task.id}`}>
-                                                <FontAwesomeIcon icon={faEye} />
-                                            </Link>
-                                        </button>
+                    tasks.length > 0 ? (
+                        <div className={styles.cardContainer}>
+                            {currentItems && currentItems.map((task => {
+                                return (
+                                    <div key={task.id} className={styles.card}>
+                                        <h3 className={styles.title}>{task.name}</h3>
+                                        <div className={styles.detailsContainer}>
+                                            <button className={styles.taskBtn}>
+                                                <Link href={`/task/[taskId]`} as={`/task/${task.id}`}>
+                                                    <FontAwesomeIcon icon={faEye} />
+                                                </Link>
+                                            </button>
 
-                                        <button value={task.id} onClick={deleteTask} className={styles.deleteBtn}>
-                                            <FontAwesomeIcon icon={faTrashAlt} />
-                                        </button>
+                                            <button value={task.id} onClick={deleteTask} className={styles.deleteBtn}>
+                                                <FontAwesomeIcon icon={faTrashAlt} />
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        }))}
-                    </div>
+                                )
+                            }))}
+                            <div className={styles.page}>
+                                <button onClick={prevHandler} className={styles.prevBtn}>
+                                    <FontAwesomeIcon icon={faArrowLeft} />
+                                </button>
+                                <button onClick={nextHandler} className={styles.nextBtn}>
+                                    <FontAwesomeIcon icon={faArrowRight} />
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={styles.message}>You currently have no tasks created</div>
+                    )
                 ) : (
                     <div>
                         <h2 className={styles.mainTitle}>Task Manger App</h2>
